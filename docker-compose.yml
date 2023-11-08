@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  api_airbag:
+    build:
+      dockerfile: "./docker/Dockerfile"
+      context: .
+    environment:
+      NODE_ENV: dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
