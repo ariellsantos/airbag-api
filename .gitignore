@@ -5,5 +5,6 @@ coverage/
 .tmp/
 /environments/production.json
 /environments/test.json
+/environments/dev.json
 logs/
 .github/
