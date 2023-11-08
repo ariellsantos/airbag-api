@@ -12,7 +12,9 @@
     "resolveJsonModule": true,
     "noUnusedLocals": true,
     "outDir": "./dist",
-    "strictPropertyInitialization": false
+    "strictPropertyInitialization": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
   },
   "include": [
     "src/**/**.ts",
