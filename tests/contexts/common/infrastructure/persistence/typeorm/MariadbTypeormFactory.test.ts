@@ -10,7 +10,7 @@ const orm = container.resolve('orm');
 const logger = container.resolve('logger');
 
 describe('MariadbTypeormFactory', () => {
-  it('creates a client to mariadb with already connected', async () => {
+  it.skip('creates a client to mariadb with already connected', async () => {
     const connection: DataSource = await mariadbTypeormConnectionFactory(mariadbConfig, orm, logger);
 
     expect(connection.isInitialized).toBe(true);

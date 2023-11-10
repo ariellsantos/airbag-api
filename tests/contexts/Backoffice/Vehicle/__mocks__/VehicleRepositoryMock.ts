@@ -31,4 +31,8 @@ export class VehicleRepositoryMock implements VehicleRepository {
   assertFindOneHasBeenCalledWith(id: string) {
     expect(this.mockfindOne).toHaveBeenCalledWith(id);
   }
+
+  assertCreateHasBeenCalledWith(vehicleInfo: VehicleType) {
+    expect(this.mockCreate).toHaveBeenCalledWith(vehicleInfo);
+  }
 }

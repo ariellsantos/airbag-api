@@ -7,6 +7,8 @@ import { prismaClientFactory } from '../../contexts/common/infrastructure/persis
 import { VehicleFinder } from '../../contexts/Backoffice/Vehicle/application/Find/VehicleFinder';
 import VehiclePrismaRepository from '../../contexts/Backoffice/Vehicle/infrastructure/persistence/prisma/VehiclePrismaRespository';
 import GetVehicleController from '../constrollers/vehicles/GetVehicleController';
+import { VehicleCreator } from '../../contexts/Backoffice/Vehicle/application/Create/VehicleCreator';
+import { PostCreateVehicleController } from '../constrollers/vehicles/PostCreateVehicleController';
 
 const container = createContainer({
   injectionMode: InjectionMode.CLASSIC
@@ -27,7 +29,9 @@ container.register({
   orm: aliasTo('typeormConnectionFactory'),
   vehicleRepository: asClass(VehiclePrismaRepository),
   vehicleFinder: asClass(VehicleFinder),
-  getVehicleController: asClass(GetVehicleController)
+  getVehicleController: asClass(GetVehicleController),
+  vehicleCreator: asClass(VehicleCreator),
+  postVehicleCreatorController: asClass(PostCreateVehicleController)
 });
 
 export { container };

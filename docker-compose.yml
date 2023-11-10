@@ -6,10 +6,10 @@ services:
     image: mariadb
     restart: always
     environment:
-      MARIADB_USER: user
-      MARIADB_ROOT_PASSWORD: pass
-      MARIADB_PASSWORD: pass
-      MARIADB_DATABASE: airbag-db
+      MARIADB_USER: ${USER_MARIADB}
+      MARIADB_ROOT_PASSWORD: ${PASS_ROOT_MARIADB}
+      MARIADB_PASSWORD: ${PASS_MARIADB}
+      MARIADB_DATABASE: ${DB_NAME_MARIADB}
     ports:
       - "3306:3306"
     expose:
