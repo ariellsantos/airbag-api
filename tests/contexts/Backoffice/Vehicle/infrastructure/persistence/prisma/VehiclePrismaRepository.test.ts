@@ -6,11 +6,11 @@ import { Prisma } from '@prisma/client';
 import { ObjectNotFound } from '../../../../../../../src/contexts/common/infrastructure/persistence/ObjectNotFound';
 
 const prismaConnection = container.resolve('prismaClient');
-
+const logger = container.resolve('logger');
 describe('VehiclePrismaRepository', () => {
   let vehicleRepository: VehiclePrismaRepository;
   beforeEach(async () => {
-    vehicleRepository = new VehiclePrismaRepository(prismaConnection);
+    vehicleRepository = new VehiclePrismaRepository(prismaConnection, logger);
   });
 
   beforeEach(async () => {

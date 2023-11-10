@@ -1,9 +1,12 @@
-import { aliasTo, asFunction, createContainer, InjectionMode } from 'awilix';
+import { aliasTo, asClass, asFunction, createContainer, InjectionMode } from 'awilix';
 import { winstonLogger } from '../winstonLogger';
 import { configFactory } from '../configs/configFactory';
 import { typeormConnectionFactory } from '../../contexts/common/infrastructure/persistence/typeorm/typeormConnectionFactory';
 import { mariadbTypeormConnectionFactory } from '../../contexts/common/infrastructure/persistence/typeorm/mariadb/mariadbConnectionFactory';
 import { prismaClientFactory } from '../../contexts/common/infrastructure/persistence/prisma/prismaClientFactory';
+import { VehicleFinder } from '../../contexts/Backoffice/Vehicle/application/Find/VehicleFinder';
+import VehiclePrismaRepository from '../../contexts/Backoffice/Vehicle/infrastructure/persistence/prisma/VehiclePrismaRespository';
+import GetVehicleController from '../constrollers/vehicles/GetVehicleController';
 
 const container = createContainer({
   injectionMode: InjectionMode.CLASSIC
@@ -21,7 +24,10 @@ container.register({
   typeormConnectionFactory: asFunction(typeormConnectionFactory),
   mariadbConnection: asFunction(mariadbTypeormConnectionFactory),
   prismaClient: asFunction(prismaClientFactory).singleton(),
-  orm: aliasTo('typeormConnectionFactory')
+  orm: aliasTo('typeormConnectionFactory'),
+  vehicleRepository: asClass(VehiclePrismaRepository),
+  vehicleFinder: asClass(VehicleFinder),
+  getVehicleController: asClass(GetVehicleController)
 });
 
 export { container };

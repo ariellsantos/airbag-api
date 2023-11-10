@@ -10,6 +10,7 @@ export type ResponseVehicleFinder = {
 };
 export class VehicleFinder {
   constructor(private readonly vehicleRepository: VehicleRepository) {}
+
   async run(info: { id: string }): Promise<ResponseVehicleFinder> {
     const vehicle = await this.vehicleRepository.findOne(info.id);
     return {

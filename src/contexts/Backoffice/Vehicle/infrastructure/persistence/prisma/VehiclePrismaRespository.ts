@@ -5,12 +5,16 @@ import { Vehicle, VehicleType } from '../../../domain/Vehicle';
 import { VehicleDataMapper } from './VehicleDataMapper';
 import { ObjectNotFound } from '../../../../../common/infrastructure/persistence/ObjectNotFound';
 import { VehicleRepository } from '../../../domain/VehicleRepository';
+import Logger from '../../../../../common/domain/Logger';
 
 export default class VehiclePrismaRepository
   extends PrismaOrmRepository<Prisma.VehicleDelegate, VehicleTypeMap, VehicleType, Vehicle>
   implements VehicleRepository
 {
-  constructor(prismaClient: PrismaClient) {
+  constructor(
+    prismaClient: PrismaClient,
+    private readonly logger: Logger
+  ) {
     super(prismaClient.vehicle);
   }
 
@@ -24,6 +28,7 @@ export default class VehiclePrismaRepository
       });
       return VehicleDataMapper.mapOne(vehicle);
     } catch (error) {
+      this.logger.error(error as Error);
       throw new ObjectNotFound(`Object does not exist`);
     }
   }
