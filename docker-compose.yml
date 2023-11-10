@@ -1,6 +1,21 @@
 version: "3.8"
 
 services:
+  db:
+    platform: linux/x86_64
+    image: mariadb
+    restart: always
+    environment:
+      MARIADB_USER: ${USER_MARIADB}
+      MARIADB_ROOT_PASSWORD: ${PASS_ROOT_MARIADB}
+      MARIADB_PASSWORD: ${PASS_MARIADB}
+      MARIADB_DATABASE: ${DB_NAME_MARIADB}
+    ports:
+      - "3306:3306"
+    expose:
+      - '3306'
+
+
   api_airbag:
     build:
       dockerfile: "./docker/Dockerfile"
@@ -11,3 +26,5 @@ services:
       - "3000:3000"
     volumes:
       - .:/app
+    depends_on:
+      - db
