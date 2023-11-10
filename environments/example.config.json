@@ -1,5 +1,13 @@
 {
-  "application":{
-    "port": 3009
+  "application": {
+    "port": 3000
+  },
+  "database": {
+    "type": "mariadb",
+    "host": "dbs",
+    "port": "3006",
+    "username": "user",
+    "password": "pass",
+    "database": "airbag-db"
   }
 }

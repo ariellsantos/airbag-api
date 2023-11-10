@@ -27,8 +27,8 @@ export interface CrudTypeMap {
 export abstract class PrismaOrmRepository<D extends Delegate, T extends CrudTypeMap, O, E> {
   protected constructor(protected delegate: D) {}
 
-  public async create(data: T['create']) {
-    await this.delegate.create(data);
+  public async create(data: O): Promise<void> {
+    await this.delegate.create({ data });
   }
 
   public async findUniqueOrThrows(data: T['findUniqueOrThrow']): Promise<O> {
@@ -39,7 +39,7 @@ export abstract class PrismaOrmRepository<D extends Delegate, T extends CrudType
     await this.delegate.update(data);
   }
 
-  public async delete(id: string) {
+  public async delete(id: string): Promise<void> {
     return await this.update({
       where: {
         id

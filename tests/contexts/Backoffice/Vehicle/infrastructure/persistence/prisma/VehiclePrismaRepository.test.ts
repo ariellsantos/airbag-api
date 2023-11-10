@@ -6,11 +6,11 @@ import { Prisma } from '@prisma/client';
 import { ObjectNotFound } from '../../../../../../../src/contexts/common/infrastructure/persistence/ObjectNotFound';
 
 const prismaConnection = container.resolve('prismaClient');
-
+const logger = container.resolve('logger');
 describe('VehiclePrismaRepository', () => {
   let vehicleRepository: VehiclePrismaRepository;
   beforeEach(async () => {
-    vehicleRepository = new VehiclePrismaRepository(prismaConnection);
+    vehicleRepository = new VehiclePrismaRepository(prismaConnection, logger);
   });
 
   beforeEach(async () => {
@@ -27,7 +27,7 @@ describe('VehiclePrismaRepository', () => {
       price: new Prisma.Decimal(20000.0)
     };
     const vehicle = Vehicle.register(vehicleInfo);
-    await vehicleRepository.create({ data: vehicle.toObject() });
+    await vehicleRepository.create(vehicle.toObject());
   });
   it('should find a vehicle registered', async () => {
     const vehicleInfo = {
@@ -39,7 +39,7 @@ describe('VehiclePrismaRepository', () => {
       price: new Prisma.Decimal(20000.0)
     };
     const vehicle = Vehicle.register(vehicleInfo);
-    await vehicleRepository.create({ data: vehicle.toObject() });
+    await vehicleRepository.create(vehicle.toObject());
 
     const vehicleDb = await vehicleRepository.findOne(vehicle.id);
     expect(vehicleDb).toEqual(vehicleInfo);
@@ -55,7 +55,7 @@ describe('VehiclePrismaRepository', () => {
       price: new Prisma.Decimal(20000.0)
     };
     const vehicle = Vehicle.register(vehicleInfo);
-    await vehicleRepository.create({ data: vehicle.toObject() });
+    await vehicleRepository.create(vehicle.toObject());
     await vehicleRepository.delete(vehicle.id);
     await expect(async () => {
       await vehicleRepository.findOne(vehicle.id);
