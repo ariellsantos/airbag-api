@@ -1,0 +1,27 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Vehicle {
+  id String @id @default(uuid())
+  plates String @db.VarChar(7)
+  vin String @db.VarChar(17)
+  brand String @db.VarChar(20)
+  vehicleType String @db.VarChar(10)
+  price Decimal @db.Decimal(10,2)
+ deleted Boolean @default(false)
+}
+
+model Driver {
+ id String @id @default(uuid())
+  name String @db.VarChar(30)
+  phone String @db.VarChar(16)
+}

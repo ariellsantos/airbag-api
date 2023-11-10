@@ -1,5 +1,3 @@
-import DataSourceOptions from 'typeorm';
-
 export type databaseType = 'mysql' | 'mariadb';
 export interface TypeOrmConfig {
   type: databaseType;

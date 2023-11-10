@@ -16,7 +16,7 @@ const config = convict({
       default: 3000
     }
   },
-  mariadbTypeorm: {
+  database: {
     type: {
       doc: 'driver of database connection',
       format: String,
@@ -52,6 +52,12 @@ const config = convict({
       format: String,
       env: 'MARIADB_DATABASE',
       default: 'airbag-db'
+    },
+    databaseUrl: {
+      doc: 'string database url',
+      format: String,
+      env: 'DATABASE_URL',
+      default: 'mysql://user:passd@db:3306/airbag-db'
     }
   }
 });

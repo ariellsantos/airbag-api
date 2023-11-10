@@ -12,6 +12,7 @@ export type MariaDbConfigurations = {
   username: string;
   password: string;
   database: string;
+  databaseUrl: string;
 };
 const properties = config.getProperties();
 
