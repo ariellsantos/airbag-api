@@ -18,7 +18,7 @@ describe('DriverPrismaRepositoy', () => {
       phone: '1234567890'
     };
     const driver = Driver.create(driverInfo);
-    await driverRepository.create({ data: driver.toObject() });
+    await driverRepository.create(driver.toObject());
   });
 
   it('should find a driver registered', async () => {
@@ -28,7 +28,7 @@ describe('DriverPrismaRepositoy', () => {
       phone: '1234567890'
     };
     const driver = Driver.create(driverInfo);
-    await driverRepository.create({ data: driver.toObject() });
+    await driverRepository.create(driver.toObject());
     const driverDb = await driverRepository.findOne(driver.id);
     expect(driverDb).toEqual(driverInfo);
   });

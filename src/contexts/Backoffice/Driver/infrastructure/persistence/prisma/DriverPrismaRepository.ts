@@ -15,7 +15,7 @@ export default class DriverPrismaRepository extends PrismaOrmRepository<
     super(prismaClient.driver);
   }
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<Driver> {
     try {
       const driver = await this.findUniqueOrThrows({
         where: {
