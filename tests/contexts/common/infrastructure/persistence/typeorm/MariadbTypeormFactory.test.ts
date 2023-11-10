@@ -26,7 +26,8 @@ describe('MariadbTypeormFactory', () => {
       port: 3376,
       username: 'user',
       password: 'pass',
-      database: 'airbag-db'
+      database: 'airbag-db',
+      databaseUrl: 'mysql://user:pass@localhost'
     };
     await expect(async () => {
       await mariadbTypeormConnectionFactory(configs, orm, logger);

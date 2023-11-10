@@ -8,3 +8,4 @@ coverage/
 /environments/dev.json
 logs/
 .github/
+.env
