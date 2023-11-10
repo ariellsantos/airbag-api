@@ -24,4 +24,5 @@ model Driver {
  id String @id @default(uuid())
   name String @db.VarChar(30)
   phone String @db.VarChar(16)
+  deleted Boolean @default(false)
 }

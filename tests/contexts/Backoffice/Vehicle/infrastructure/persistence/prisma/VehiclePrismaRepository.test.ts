@@ -6,13 +6,17 @@ import { Prisma } from '@prisma/client';
 import { ObjectNotFound } from '../../../../../../../src/contexts/common/infrastructure/persistence/ObjectNotFound';
 
 const prismaConnection = container.resolve('prismaClient');
-const logger = container.resolve('logger');
 
 describe('VehiclePrismaRepository', () => {
   let vehicleRepository: VehiclePrismaRepository;
   beforeEach(async () => {
     vehicleRepository = new VehiclePrismaRepository(prismaConnection);
   });
+
+  beforeEach(async () => {
+    // Todo: implement truncate info after tests finished
+  });
+
   it('Should create a new Vehicle', async () => {
     const vehicleInfo = {
       id: uuid(),
@@ -38,7 +42,6 @@ describe('VehiclePrismaRepository', () => {
     await vehicleRepository.create({ data: vehicle.toObject() });
 
     const vehicleDb = await vehicleRepository.findOne(vehicle.id);
-    logger.info(typeof vehicleDb.price);
     expect(vehicleDb).toEqual(vehicleInfo);
   });
 
