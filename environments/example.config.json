@@ -9,5 +9,9 @@
     "username": "user",
     "password": "pass",
     "database": "airbag-db"
+  },
+  "openExchangeApi": {
+    "appId": "appid",
+    "baseUrl": "https://openexchangerates.org/api"
   }
 }

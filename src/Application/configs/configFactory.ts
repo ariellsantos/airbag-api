@@ -14,9 +14,14 @@ export type MariaDbConfigurations = {
   database: string;
   databaseUrl: string;
 };
+
+export type OpenExchangeConfig = {
+  appId: string;
+  baseUrl: string;
+};
 const properties = config.getProperties();
 
-type Configs = string | number | ApplicationConfigurations | MariaDbConfigurations;
+type Configs = string | number | ApplicationConfigurations | MariaDbConfigurations | OpenExchangeConfig;
 export function configFactory(resource: convict.Path<typeof properties>): Configs {
   return config.get(resource);
 }

@@ -9,6 +9,7 @@ import VehiclePrismaRepository from '../../contexts/Backoffice/Vehicle/infrastru
 import GetVehicleController from '../constrollers/vehicles/GetVehicleController';
 import { VehicleCreator } from '../../contexts/Backoffice/Vehicle/application/Create/VehicleCreator';
 import { PostCreateVehicleController } from '../constrollers/vehicles/PostCreateVehicleController';
+import AxiosClient from '../../contexts/common/infrastructure/http/AxiosClient';
 
 const container = createContainer({
   injectionMode: InjectionMode.CLASSIC
@@ -23,6 +24,9 @@ container.register({
   mariadbConfig: asFunction(configFactory, {
     injector: () => ({ resource: 'database' })
   }),
+  openExchangeConfig: asFunction(configFactory, {
+    injector: () => ({ resource: 'openExchangeApi' })
+  }),
   typeormConnectionFactory: asFunction(typeormConnectionFactory),
   mariadbConnection: asFunction(mariadbTypeormConnectionFactory),
   prismaClient: asFunction(prismaClientFactory).singleton(),
@@ -31,7 +35,8 @@ container.register({
   vehicleFinder: asClass(VehicleFinder),
   getVehicleController: asClass(GetVehicleController),
   vehicleCreator: asClass(VehicleCreator),
-  postVehicleCreatorController: asClass(PostCreateVehicleController)
+  postVehicleCreatorController: asClass(PostCreateVehicleController),
+  httpClient: asClass(AxiosClient)
 });
 
 export { container };
