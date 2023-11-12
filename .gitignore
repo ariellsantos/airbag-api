@@ -9,3 +9,4 @@ coverage/
 logs/
 .github/
 .env
+prisma-mongo/client

@@ -9,6 +9,11 @@ import VehiclePrismaRepository from '../../contexts/Backoffice/Vehicle/infrastru
 import GetVehicleController from '../constrollers/vehicles/GetVehicleController';
 import { VehicleCreator } from '../../contexts/Backoffice/Vehicle/application/Create/VehicleCreator';
 import { PostCreateVehicleController } from '../constrollers/vehicles/PostCreateVehicleController';
+import AxiosClient from '../../contexts/common/infrastructure/http/AxiosClient';
+import OpenExchangeService from '../../contexts/Backoffice/CurrencyRates/infrastructure/openexchangeapi/OpenExchangeApiService';
+import { prismaMongoClientFactory } from '../../contexts/common/infrastructure/persistence/prisma/prismaMongoClientFactory';
+import CurrenciesRatePrismaRepository from '../../contexts/Backoffice/CurrencyRates/infrastructure/persistence/prisma/CurrenciesRatePrismaRepository';
+import InsertLastCurrenciesRate from '../../contexts/Backoffice/CurrencyRates/application/Insert/InsertLastCurrenciesRate';
 
 const container = createContainer({
   injectionMode: InjectionMode.CLASSIC
@@ -23,6 +28,9 @@ container.register({
   mariadbConfig: asFunction(configFactory, {
     injector: () => ({ resource: 'database' })
   }),
+  openExchangeConfig: asFunction(configFactory, {
+    injector: () => ({ resource: 'openExchangeApi' })
+  }),
   typeormConnectionFactory: asFunction(typeormConnectionFactory),
   mariadbConnection: asFunction(mariadbTypeormConnectionFactory),
   prismaClient: asFunction(prismaClientFactory).singleton(),
@@ -31,7 +39,13 @@ container.register({
   vehicleFinder: asClass(VehicleFinder),
   getVehicleController: asClass(GetVehicleController),
   vehicleCreator: asClass(VehicleCreator),
-  postVehicleCreatorController: asClass(PostCreateVehicleController)
+  postVehicleCreatorController: asClass(PostCreateVehicleController),
+  httpClient: asClass(AxiosClient),
+  openExchangeService: asClass(OpenExchangeService),
+  exchangeService: aliasTo('openExchangeService'),
+  prismaMongoClient: asFunction(prismaMongoClientFactory).singleton(),
+  currenciesRateRepository: asClass(CurrenciesRatePrismaRepository),
+  insertLastCurrenciesRateService: asClass(InsertLastCurrenciesRate)
 });
 
 export { container };
