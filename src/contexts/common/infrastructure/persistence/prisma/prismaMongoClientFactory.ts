@@ -1,4 +1,4 @@
-import { PrismaClient } from '../../../../../../prisma-mongo/client/';
+import { PrismaClient } from '../../../../../../prisma-mongo/client';
 
 export function prismaMongoClientFactory() {
   return new PrismaClient();

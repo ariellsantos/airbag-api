@@ -12,6 +12,8 @@ import { PostCreateVehicleController } from '../constrollers/vehicles/PostCreate
 import AxiosClient from '../../contexts/common/infrastructure/http/AxiosClient';
 import OpenExchangeService from '../../contexts/Backoffice/CurrencyRates/infrastructure/openexchangeapi/OpenExchangeApiService';
 import { prismaMongoClientFactory } from '../../contexts/common/infrastructure/persistence/prisma/prismaMongoClientFactory';
+import CurrenciesRatePrismaRepository from '../../contexts/Backoffice/CurrencyRates/infrastructure/persistence/prisma/CurrenciesRatePrismaRepository';
+import InsertLastCurrenciesRate from '../../contexts/Backoffice/CurrencyRates/application/Insert/InsertLastCurrenciesRate';
 
 const container = createContainer({
   injectionMode: InjectionMode.CLASSIC
@@ -41,7 +43,9 @@ container.register({
   httpClient: asClass(AxiosClient),
   openExchangeService: asClass(OpenExchangeService),
   exchangeService: aliasTo('openExchangeService'),
-  prismaMongoClient: asFunction(prismaMongoClientFactory).singleton()
+  prismaMongoClient: asFunction(prismaMongoClientFactory).singleton(),
+  currenciesRateRepository: asClass(CurrenciesRatePrismaRepository),
+  insertLastCurrenciesRateService: asClass(InsertLastCurrenciesRate)
 });
 
 export { container };

@@ -12,16 +12,16 @@ type OpenExchangeResponseType = {
 
 export default class OpenExchangeService implements CurrencyExchangeRateService {
   constructor(
-    private readonly config: OpenExchangeConfig,
+    private readonly openExchangeConfig: OpenExchangeConfig,
     private readonly httpClient: HttpClient<ResponseHttpClient>,
     private readonly logger: Logger
   ) {}
 
   async getLastCurrencyRates(...currencies: string[]): Promise<CurrencyRate[]> {
     try {
-      const response = await this.httpClient.getRequest(`${this.config.baseUrl}/latest.json`, {
+      const response = await this.httpClient.getRequest(`${this.openExchangeConfig.baseUrl}/latest.json`, {
         params: {
-          app_id: this.config.appId,
+          app_id: this.openExchangeConfig.appId,
           symbols: currencies.join(',')
         }
       });

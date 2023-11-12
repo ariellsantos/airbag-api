@@ -73,6 +73,14 @@ const config = convict({
       format: String,
       default: 'https://openexchangerates.org/api'
     }
+  },
+  mongoDb: {
+    databaseURI: {
+      doc: 'URI form database mongodb',
+      env: 'DATABASE_URL_MONGO',
+      format: String,
+      default: 'mongodb+srv://user:pass@mongo/airbag-db?retryWrites=true&w=majority'
+    }
   }
 });
 

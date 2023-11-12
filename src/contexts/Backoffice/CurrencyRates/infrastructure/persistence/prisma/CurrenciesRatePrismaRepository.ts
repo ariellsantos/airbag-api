@@ -5,14 +5,7 @@ import { ObjectNotFound } from '../../../../../common/infrastructure/persistence
 import Logger from '../../../../../common/domain/Logger';
 import { CurrenciesRateTypeMap } from './CurrencesRateTypeMap';
 import { CurrenciesRateDataMapper } from './CurrenciesRateDataMapper';
-
-export interface CurrenciesRateRepository {
-  findOne(id: string): Promise<CurrenciesRate>;
-
-  delete(id: string): Promise<void>;
-
-  create(data: CurrenciesRateType): Promise<void>;
-}
+import { CurrenciesRateRepository } from './CurrenciesRateRepository';
 
 export type CurrencyRateTypeDB = {
   id?: string;
@@ -30,13 +23,14 @@ export default class CurrenciesRatePrismaRepository
   implements CurrenciesRateRepository
 {
   constructor(
-    prismaClient: PrismaClient,
+    protected readonly prismaMongoClient: PrismaClient,
     private readonly logger: Logger
   ) {
-    super(prismaClient.currenciesRate);
+    super(prismaMongoClient.currenciesRate);
   }
 
   async create(data: CurrenciesRateType): Promise<void> {
+    this.logger.info(`saving currencies rates ${JSON.stringify(data)}`);
     await this.delegate.create({
       data: {
         date: data.date,
