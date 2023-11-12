@@ -1,12 +1,8 @@
 import CurrencyRate from '../../domain/CurrencyRate';
 import Logger from '../../../../common/domain/Logger';
-import { Prisma } from '@prisma/client';
 import { HttpClient, ResponseHttpClient } from '../../../../common/infrastructure/http/AxiosClient';
 import { OpenExchangeConfig } from '../../../../../Application/configs/configFactory';
-
-interface CurrencyExchangeRateService {
-  getLastCurrencyRates(...currencies: string[]): Promise<CurrencyRate[]>;
-}
+import CurrencyExchangeRateService from '../../domain/CurrencyExchangeRateService';
 
 type OpenExchangeResponseType = {
   rates: {
@@ -30,8 +26,7 @@ export default class OpenExchangeService implements CurrencyExchangeRateService 
         }
       });
       const data = response.data as OpenExchangeResponseType;
-      this.logger.debug(currencies.join(','));
-      this.logger.debug(JSON.stringify(data));
+
       const currencyRates: CurrencyRate[] = [];
 
       const mxnXusd = this.reversMXNtoUSD(data.rates.MXN, data.rates.USD);
@@ -39,7 +34,7 @@ export default class OpenExchangeService implements CurrencyExchangeRateService 
       delete data.rates.MXN;
       for (const [code, rate] of Object.entries(data.rates)) {
         const mxnRate = this.calculateCrossRateExchange(mxnXusd, rate);
-        currencyRates.push(new CurrencyRate(code, new Prisma.Decimal(mxnRate)));
+        currencyRates.push(new CurrencyRate(code, mxnRate));
       }
       return currencyRates;
     } catch (error) {
@@ -49,7 +44,8 @@ export default class OpenExchangeService implements CurrencyExchangeRateService 
   }
 
   private calculateCrossRateExchange(mxnRate: number, otherExchangeRate: number): number {
-    return mxnRate * otherExchangeRate;
+    const rate = mxnRate * otherExchangeRate;
+    return Number(Number(rate).toFixed(3)) * 1000;
   }
 
   private reversMXNtoUSD(mxn: number, usd: number): number {

@@ -10,6 +10,8 @@ import GetVehicleController from '../constrollers/vehicles/GetVehicleController'
 import { VehicleCreator } from '../../contexts/Backoffice/Vehicle/application/Create/VehicleCreator';
 import { PostCreateVehicleController } from '../constrollers/vehicles/PostCreateVehicleController';
 import AxiosClient from '../../contexts/common/infrastructure/http/AxiosClient';
+import OpenExchangeService from '../../contexts/Backoffice/CurrencyRates/infrastructure/openexchangeapi/OpenExchangeApiService';
+import { prismaMongoClientFactory } from '../../contexts/common/infrastructure/persistence/prisma/prismaMongoClientFactory';
 
 const container = createContainer({
   injectionMode: InjectionMode.CLASSIC
@@ -36,7 +38,10 @@ container.register({
   getVehicleController: asClass(GetVehicleController),
   vehicleCreator: asClass(VehicleCreator),
   postVehicleCreatorController: asClass(PostCreateVehicleController),
-  httpClient: asClass(AxiosClient)
+  httpClient: asClass(AxiosClient),
+  openExchangeService: asClass(OpenExchangeService),
+  exchangeService: aliasTo('openExchangeService'),
+  prismaMongoClient: asFunction(prismaMongoClientFactory).singleton()
 });
 
 export { container };

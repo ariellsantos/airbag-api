@@ -1,14 +1,12 @@
-import { Prisma } from '@prisma/client';
-
 export type CurrencyRateType = {
   code: string;
-  rate: Prisma.Decimal;
+  rate: number;
 };
 
 export default class CurrencyRate {
   constructor(
     readonly code: string,
-    readonly rate: Prisma.Decimal
+    readonly rate: number
   ) {}
 
   fromObject(data: CurrencyRateType): CurrencyRate {
