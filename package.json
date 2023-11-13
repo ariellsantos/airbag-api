@@ -6,6 +6,8 @@
   "scripts": {
     "lint": "tslint src/**/*.ts{,x}",
     "test:features": "NODE_ENV=test node ./node_modules/@cucumber/cucumber/bin/cucumber-js",
+    "test:integration": "npm test -- --group=integration",
+    "test:unit": "npm test -- --group=unit",
     "test": "NODE_ENV=test jest --verbose",
     "dev": "NODE_ENV=dev ts-node-dev --ignore-watch node_modules ./src/Application/app.ts",
     "prepare": "husky install",

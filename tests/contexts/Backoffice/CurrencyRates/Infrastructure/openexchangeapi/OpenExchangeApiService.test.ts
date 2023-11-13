@@ -8,6 +8,9 @@ import { OpenExchangeConfig } from '../../../../../../src/Application/configs/co
 const logger: Logger = container.resolve('logger');
 const config: OpenExchangeConfig = container.resolve('openExchangeConfig');
 const httpClient: HttpClient<any> = container.resolve('httpClient');
+/**
+ * @group integration
+ */
 describe('OpenExchangeApi', () => {
   it('should return the reates for currencies provided', async () => {
     const openExchangeService = new OpenExchangeService(config, httpClient, logger);
