@@ -5,10 +5,17 @@ export class VehicleRepositoryMock implements VehicleRepository {
   private mockCreate = jest.fn();
   private mockDelete = jest.fn();
   private mockfindOne = jest.fn();
+  private mockFindAll = jest.fn();
 
   returnOnFindOne(vehicle: Vehicle) {
     this.mockfindOne.mockImplementation(() => {
       return vehicle;
+    });
+  }
+
+  returnOnFindAll(vehicles: Vehicle[] | []) {
+    this.mockFindAll.mockImplementation(() => {
+      return vehicles;
     });
   }
 
@@ -34,5 +41,13 @@ export class VehicleRepositoryMock implements VehicleRepository {
 
   assertCreateHasBeenCalledWith(vehicleInfo: VehicleType) {
     expect(this.mockCreate).toHaveBeenCalledWith(vehicleInfo);
+  }
+
+  assertFindAllHasBeenCalled() {
+    expect(this.mockFindAll).toHaveBeenCalled();
+  }
+
+  async findAll(): Promise<Vehicle[] | []> {
+    return this.mockFindAll();
   }
 }

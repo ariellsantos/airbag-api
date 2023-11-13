@@ -8,6 +8,9 @@ import {
 } from '../../../../../../src/contexts/Backoffice/Vehicle/application/Find/VehicleFinder';
 import { ObjectNotFound } from '../../../../../../src/contexts/common/infrastructure/persistence/ObjectNotFound';
 
+/**
+ * @group unit
+ */
 describe('VehicleFinder', () => {
   let vehicleRepository: VehicleRepositoryMock;
 

@@ -7,6 +7,9 @@ import { ObjectNotFound } from '../../../../../../../src/contexts/common/infrast
 
 const prismaConnection = container.resolve('prismaClient');
 const logger = container.resolve('logger');
+/**
+ * @group integration
+ */
 describe('VehiclePrismaRepository', () => {
   let vehicleRepository: VehiclePrismaRepository;
   beforeEach(async () => {
@@ -60,5 +63,22 @@ describe('VehiclePrismaRepository', () => {
     await expect(async () => {
       await vehicleRepository.findOne(vehicle.id);
     }).rejects.toThrowError(new ObjectNotFound(`Object does not exist`));
+  });
+
+  it('should return a list of Vehicle', async () => {
+    const vehicleInfo = {
+      id: uuid(),
+      plates: 'AC-121',
+      vin: '3LN123456789G4564',
+      vehicleType: 'SUV',
+      brand: 'Toyota',
+      price: new Prisma.Decimal(20000.0)
+    };
+    const vehicle = Vehicle.register(vehicleInfo);
+    await vehicleRepository.create(vehicle.toObject());
+
+    const res = await vehicleRepository.findAll();
+
+    expect(res.every(e => e instanceof Vehicle)).toBeTruthy();
   });
 });

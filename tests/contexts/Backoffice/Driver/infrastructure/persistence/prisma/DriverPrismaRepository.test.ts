@@ -3,7 +3,10 @@ import { container } from '../../../../../../../src/Application/dependency-injec
 import Driver, { DriverType } from '../../../../../../../src/contexts/Backoffice/Driver/domain/Driver';
 import DriverPrismaRepository from '../../../../../../../src/contexts/Backoffice/Driver/infrastructure/persistence/prisma/DriverPrismaRepository';
 const prismaConnection = container.resolve('prismaClient');
-describe('DriverPrismaRepositoy', () => {
+/**
+ * @group integration
+ */
+describe('DriverPrismaRepository', () => {
   let driverRepository: DriverPrismaRepository;
   beforeEach(() => {
     driverRepository = new DriverPrismaRepository(prismaConnection);

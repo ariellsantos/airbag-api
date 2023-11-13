@@ -59,6 +59,28 @@ const config = convict({
       env: 'DATABASE_URL',
       default: 'mysql://user:passd@db:3306/airbag-db'
     }
+  },
+  openExchangeApi: {
+    appId: {
+      doc: 'APP ID Openexchange',
+      env: 'APP_ID_OPENEXCHANGE',
+      format: String,
+      default: 'appid'
+    },
+    baseUrl: {
+      doc: 'base url Openexchange',
+      env: 'BASE_URL_OPENEXCHANGE',
+      format: String,
+      default: 'https://openexchangerates.org/api'
+    }
+  },
+  mongoDb: {
+    databaseURI: {
+      doc: 'URI form database mongodb',
+      env: 'DATABASE_URL_MONGO',
+      format: String,
+      default: 'mongodb+srv://user:pass@mongo/airbag-db?retryWrites=true&w=majority'
+    }
   }
 });
 
