@@ -24,3 +24,9 @@ model CurrenciesRate {
   rates   Rate[]
   deleted Boolean  @default(false)
 }
+
+model VehiclePrices {
+  id String @id @default(uuid()) @map("_id")
+  date DateTime @db.Date
+  view String
+}
