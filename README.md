@@ -114,6 +114,9 @@ container.register({
   mariadbConfig: asFunction(configFactory, {
     injector: () => ({ resource: 'database' })
   }),
+  openExchangeConfig: asFunction(configFactory, {
+    injector: () => ({ resource: 'openExchangeApi' })
+  }),
   typeormConnectionFactory: asFunction(typeormConnectionFactory),
   mariadbConnection: asFunction(mariadbTypeormConnectionFactory),
   prismaClient: asFunction(prismaClientFactory).singleton(),
@@ -122,10 +125,20 @@ container.register({
   vehicleFinder: asClass(VehicleFinder),
   getVehicleController: asClass(GetVehicleController),
   vehicleCreator: asClass(VehicleCreator),
-  postVehicleCreatorController: asClass(PostCreateVehicleController)
+  postVehicleCreatorController: asClass(PostCreateVehicleController),
+  httpClient: asClass(AxiosClient),
+  openExchangeService: asClass(OpenExchangeService),
+  exchangeService: aliasTo('openExchangeService'),
+  prismaMongoClient: asFunction(prismaMongoClientFactory).singleton(),
+  currenciesRateRepository: asClass(CurrenciesRatePrismaRepository),
+  insertLastCurrenciesRateService: asClass(InsertLastCurrenciesRate),
+  latestCurrenciesRatesFinderService: asClass(LatestCurrenciesRatesFinder),
+  allVehiclesFinderService: asClass(AllVehiclesFinder),
+  vehiclesPricesRepository: asClass(VehiclesPricesPrismaRepository),
+  lastVehiclesPricesInsertService: asClass(LastVehiclesPricesInsert),
+  latestVehiclesPricesFinderService: asClass(LatestVehiclePricesFinder),
+  getVehiclesPricesController: asClass(GetVehiclesPricesController)
 });
-
-export { container };
 ```
 
 ### Prisma ORM
@@ -135,6 +148,7 @@ La elección de Prisma ORM se basó en su facilidad de uso, especialmente para i
 Se creó una clase base de repositorio que se utiliza como plantilla en cada uno de los repositorios dentro del proyecto. Este repositorio base nos permite encapsular las funciones necesarias para manejar los datos de cada uno de los modelos:
 
 Esta implementación con Prisma ORM simplifica la interacción con la base de datos y proporciona una estructura organizada para gestionar los datos de manera eficiente.
+
 
 ```typescript
 export abstract class PrismaOrmRepository<D extends Delegate, T extends CrudTypeMap, O, E> {
@@ -195,13 +209,78 @@ export default class VehiclePrismaRepository
 }
 ```
 
+Se utiliza prisma para realizar conexiones a dos bases de datos "MariaDB y MongoDB"  y así poder reutilizar código base de los repositorios 
 
-La conexión con la base de datos por parte de Prisma se crea a partir de una function factory.
+```typescript
+export default class CurrenciesRatePrismaRepository
+  extends PrismaOrmRepository<Prisma.CurrenciesRateDelegate, CurrenciesRateTypeMap, CurrenciesRateType, CurrenciesRate>
+  implements CurrenciesRateRepository
+{
+  constructor(
+    protected readonly prismaMongoClient: PrismaClient,
+    private readonly logger: Logger
+  ) {
+    super(prismaMongoClient.currenciesRate);
+  }
+
+  async create(data: CurrenciesRateType): Promise<void> {
+    this.logger.info(`saving currencies rates ${JSON.stringify(data)}`);
+    await this.delegate.create({
+      data: {
+        date: data.date,
+        id: data.id,
+        rates: {
+          createMany: {
+            data: data.rates
+          }
+        }
+      }
+    });
+  }
+
+  async findLast() {
+    const currenciesRate: CurrenciesRateTypeDB = await this.delegate.findFirstOrThrow({
+      where: {
+        deleted: false
+      },
+      orderBy: {
+        date: 'desc'
+      },
+      include: {
+        rates: true
+      }
+    });
+    return CurrenciesRateDataMapper.mapOne(currenciesRate);
+  }
+  async findOne(id: string): Promise<CurrenciesRate> {
+    try {
+      const currenciesRate = await this.findUniqueOrThrows({
+        where: {
+          id,
+          deleted: false
+        }
+      });
+      return CurrenciesRateDataMapper.mapOne(currenciesRate);
+    } catch (error) {
+      this.logger.error(error as Error);
+      throw new ObjectNotFound(`Object does not exist`);
+    }
+  }
+}
+```
+
+
+Las conexiones con la base de datos por parte de Prisma se crea a partir de una function factory y se inyecta por constructor a los repositorios que la necesitan
 
 ```typescript
 export function prismaClientFactory() {
   return new PrismaClient();
 }
+
+export function prismaMongoClientFactory() {
+  return new PrismaClient();
+}
+
 ```
 
 Esta función se registra en el contenedor de dependencias como singleton, permitiéndonos reutilizar la conexión y evitando crear una nueva cada vez.
@@ -375,12 +454,144 @@ En esta ocasión, se decidió utilizar PM2. La elección se basa en la intenció
 
 ### Base de Datos:
 
+#### MariaDB
 Se utiliza MariaDB como base de datos debido a su amplio reconocimiento y rendimiento suficiente para el proyecto actual. En caso de requerir mayor rendimiento en el futuro, la estructura de la aplicación permite agregar otra conexión de manera casi transparente para los servicios que la utilicen.
+
+MariaDB es utilizada para guardar los datos transaccionales de la aplicación
+
+#### MongoDB
+
+Se integró mongodb para la estructura de documentos e información de vistas que se calculan mediante cron jobs
+
 
 
 ## Características del API:
 
-Esta API consta de dos endpoints.
+### Obtención de tipo de cambio MXN -> GBP ,USD, EUR
+
+#### Conexiones HTTP
+
+Se integró como un cliente el paquete `axios` que permite realizar peticiones HTTP.
+Este cliente es pasado por constructor a los servicios que requieran realizar peticiones.
+
+
+```typescript
+export interface HttpClient<R extends ResponseHttpClient> {
+  getRequest(url: string, requestParams: RequestParamsType): Promise<R>;
+}
+
+export default class AxiosClient implements HttpClient<AxiosResponse> {
+  constructor(private readonly logger: Logger) {}
+  async getRequest(url: string, requestParams: RequestParamsType = {}): Promise<AxiosResponse> {
+    try {
+      return await axios.get(url, requestParams);
+    } catch (error) {
+      this.logger.error(error as Error);
+      throw new ApiRequestError(`Error Get Request with: ${AxiosClient.name}`);
+    }
+  }
+
+```
+
+#### Open exchange API
+
+Se integró una conexión con el API de Open exchange , el cual es utilizado para obtener los tipos de cambio al momento
+
+A este servicio se le pasa por construtor un cliente http , en este caso el cliente de axios , pero puede ser cualquiera que cumpla con el contrato especificado
+
+```typescript
+export default class OpenExchangeService implements CurrencyExchangeRateService {
+  constructor(
+    private readonly openExchangeConfig: OpenExchangeConfig,
+    private readonly httpClient: HttpClient<ResponseHttpClient>,
+    private readonly logger: Logger
+  ) {}
+
+  async getLastCurrencyRates(...currencies: string[]): Promise<CurrencyRate[]> {
+    try {
+      const response = await this.httpClient.getRequest(`${this.openExchangeConfig.baseUrl}/latest.json`, {
+        params: {
+          app_id: this.openExchangeConfig.appId,
+          symbols: currencies.join(',')
+        }
+      });
+      const data = response.data as OpenExchangeResponseType;
+
+      const currencyRates: CurrencyRate[] = [];
+
+      const mxnXusd = this.reversMXNtoUSD(data.rates.MXN, data.rates.USD);
+
+      for (const [code, rate] of Object.entries(data.rates)) {
+        const mxnRate = this.calculateCrossRateExchange(mxnXusd, rate);
+        currencyRates.push(new CurrencyRate(code, mxnRate));
+      }
+      return currencyRates;
+    } catch (error) {
+      this.logger.error(error as Error);
+      throw new Error('Error from here');
+    }
+  }
+
+  private calculateCrossRateExchange(mxnRate: number, otherExchangeRate: number): number {
+    const rate = mxnRate * otherExchangeRate;
+    return Number(Number(rate).toFixed(3)) * 1000;
+  }
+
+  private reversMXNtoUSD(mxn: number, usd: number): number {
+    return usd / mxn;
+  }
+}
+
+```
+
+### Cron jobs
+
+La aplicación cuenta con dos cron jobs:
+1. **Jon currencies rates:** Se dedica a obtener la información de cambio de moneda e insertarlo en la base de datos de mongo
+2. **Job vehicles prices:** Toma la información del último tipo de cambio registrado y de los vehículos registrados para  generar una vista con la información del precio de cada uno de los vehiculos con su precio convertido al tipo de cambio de cada moneda
+
+```typescript
+cron.schedule('* */10 * * *', async () => {
+  try {
+    logger.info('running job');
+
+    const insertLasCurrenciesRateService: InsertLastCurrenciesRate = container.resolve(
+      'insertLastCurrenciesRateService'
+    );
+    const id = uuid();
+    const date = new Date();
+    await insertLasCurrenciesRateService.run(id, date);
+  } catch (error) {
+    logger.error(error as Error);
+  }
+
+  logger.info('Job finished');
+});
+
+
+
+cron.schedule('* */30 * * *', async () => {
+  try {
+    logger.info('running job');
+
+    const insertLasCurrenciesRateService: LastVehiclesPricesInsert = container.resolve(
+      'lastVehiclesPricesInsertService'
+    );
+    const id = uuid();
+    const date = new Date();
+    await insertLasCurrenciesRateService.run(id, date);
+  } catch (error) {
+    logger.error(error as Error);
+  }
+
+  logger.info('Job finished');
+});
+
+
+```
+
+### Endpoints
+Esta API consta de 3 endpoints.
 
 ```json
 GET - /vehicles/:id
@@ -412,6 +623,43 @@ BODY
 }
 
 Response -> 201 Created
+```
+
+```json
+GET - /vehicles-prices
+Response -> 200 OK
+
+{
+  "data": {
+    "id": "a17c4835-717a-4256-80f4-2b4c479fde5a",
+    "date": "2023-11-13T15:22:00.497Z",
+    "vehicles": [
+      {
+        "id": "07ce6da4-eb91-4281-b657-1f0d9be2c634",
+        "date": "2023-11-13T14:13:00.512Z",
+        "prices": [
+          {
+            "code": "EUR",
+            "price": "1060"
+          },
+          {
+            "code": "GBP",
+            "price": "920"
+          },
+          {
+            "code": "MXN",
+            "price": "20000"
+          },
+          {
+            "code": "USD",
+            "price": "1140"
+          }
+        ]
+      },
+      ...
+    ]
+  }
+}
 ```
 
 Características del API - Enfoque de ID (uuid4):
@@ -488,6 +736,8 @@ La elección de express-validator se debe a su naturaleza intuitiva y su capacid
 Requerimientos:
 
 * Docker y Docker Compose instalados.
+* Una base de datos mongodb con replica set activado (puedes crear una gratis en [Mogo Atlas](https://www.mongodb.com/docs/atlas/tutorial/deploy-free-tier-cluster/) )
+* Crear una cuenta en [Open Exchange](https://openexchangerates.org/) y generar un APP ID 
 
 Instrucciones:
 
