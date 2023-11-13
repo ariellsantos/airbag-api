@@ -773,8 +773,7 @@ Instrucciones:
 2. Asegúrate de tener los archivos `.env` y **environments/{dev, prod, test}.json** con las configuraciones correctas.
 3. Ejecuta el comando **docker-compose up --build** para levantar el entorno de la API y la base de datos necesaria para el funcionamiento del API.
 4. Una vez que los contenedores con el API y la base de datos han iniciado, accede a la terminal del contenedor que está ejecutando el API.
-5. Dentro del contenedor del API, ejecuta el comando **npx prisma generate** para sincronizar los modelos y generar el Prisma Client para el proyecto, lo que nos permite trabajar con cada modelo.
-6. Ejecuta el comando **npm run db:sync** para enviar los cambios en los modelos a la base de datos.
+6. Ejecuta el comando **npm run db:sync** o `npm run apply:migration`  para enviar los cambios en los modelos a la base de datos.
 
 
 Estas instrucciones te guiarán para configurar el entorno local utilizando Docker y Docker Compose, permitiéndote trabajar con el proyecto de manera efectiva.
