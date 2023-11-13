@@ -16,6 +16,8 @@ import CurrenciesRatePrismaRepository from '../../contexts/Backoffice/CurrencyRa
 import InsertLastCurrenciesRate from '../../contexts/Backoffice/CurrencyRates/application/Insert/InsertLastCurrenciesRate';
 import LatestCurrenciesRatesFinder from '../../contexts/Backoffice/CurrencyRates/application/Find/LatestCurrenciesRatesFinder';
 import AllVehiclesFinder from '../../contexts/Backoffice/Vehicle/application/Find/AllVehiclesFinder';
+import VehiclesPricesPrismaRepository from '../../contexts/Backoffice/VehiclesPrices/infrastructure/persistence/prisma/VehiclePricesPrismaRepository';
+import LastVehiclesPricesInsert from '../../contexts/Backoffice/VehiclesPrices/application/Insert/LastVehiclesPricesInsert';
 
 const container = createContainer({
   injectionMode: InjectionMode.CLASSIC
@@ -49,7 +51,9 @@ container.register({
   currenciesRateRepository: asClass(CurrenciesRatePrismaRepository),
   insertLastCurrenciesRateService: asClass(InsertLastCurrenciesRate),
   latestCurrenciesRatesFinderService: asClass(LatestCurrenciesRatesFinder),
-  allVehiclesFinderService: asClass(AllVehiclesFinder)
+  allVehiclesFinderService: asClass(AllVehiclesFinder),
+  vehiclesPricesRepository: asClass(VehiclesPricesPrismaRepository),
+  lastVehiclesPricesInsertService: asClass(LastVehiclesPricesInsert)
 });
 
 export { container };

@@ -5,7 +5,7 @@ import { ObjectNotFound } from '../../../../../common/infrastructure/persistence
 import Logger from '../../../../../common/domain/Logger';
 import { CurrenciesRateTypeMap } from './CurrencesRateTypeMap';
 import { CurrenciesRateDataMapper } from './CurrenciesRateDataMapper';
-import { CurrenciesRateRepository } from './CurrenciesRateRepository';
+import { CurrenciesRateRepository } from '../../../domain/CurrenciesRateRepository';
 
 export type CurrencyRateTypeDB = {
   id?: string;

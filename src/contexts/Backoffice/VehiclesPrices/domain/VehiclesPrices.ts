@@ -1,4 +1,7 @@
 import VehiclePrices, { VehiclePricesType } from './VehiclePrices';
+import { Vehicle } from '../../Vehicle/domain/Vehicle';
+import CurrenciesRate from '../../CurrencyRates/domain/CurrenciesRate';
+import { PriceVehicleType } from './PriceVehicle';
 
 export type VehiclesPricesType = {
   id: string;
@@ -25,6 +28,23 @@ export default class VehiclesPrices {
         });
       })
     );
+  }
+
+  static calculateVehiclesPrices(vehicles: Vehicle[], currencyRates: CurrenciesRate) {
+    const vehiclesPrices: VehiclePricesType[] = vehicles.map(v => {
+      const prices = currencyRates.currencies.map((c): PriceVehicleType => {
+        return {
+          code: c.code,
+          price: v.convertPriceToCurrency(c.rate)
+        };
+      });
+      return {
+        id: v.id,
+        date: currencyRates.date,
+        prices
+      };
+    });
+    return vehiclesPrices;
   }
 
   toObject(): VehiclesPricesType {

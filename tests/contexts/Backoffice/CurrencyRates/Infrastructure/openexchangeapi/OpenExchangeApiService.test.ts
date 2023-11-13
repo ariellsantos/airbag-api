@@ -13,7 +13,7 @@ describe('OpenExchangeApi', () => {
     const openExchangeService = new OpenExchangeService(config, httpClient, logger);
 
     const response: CurrencyRate[] = await openExchangeService.getLastCurrencyRates('GBP', 'USD', 'EUR', 'MXN');
-    expect(response.length).toBe(3);
+    expect(response.length).toBe(4);
     expect(response.every(e => e instanceof CurrencyRate)).toBeTruthy();
   });
 });

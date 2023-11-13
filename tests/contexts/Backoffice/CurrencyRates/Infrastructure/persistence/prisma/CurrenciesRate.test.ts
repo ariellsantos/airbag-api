@@ -32,6 +32,10 @@ describe('CurrenciesRatePrismaRepository', () => {
         {
           code: 'USD',
           rate: generateRandomRate()
+        },
+        {
+          code: 'MXN',
+          rate: 1000
         }
       ],
       date: new Date()
@@ -56,6 +60,10 @@ describe('CurrenciesRatePrismaRepository', () => {
         {
           code: 'USD',
           rate: generateRandomRate()
+        },
+        {
+          code: 'MXN',
+          rate: 1000
         }
       ]
     };

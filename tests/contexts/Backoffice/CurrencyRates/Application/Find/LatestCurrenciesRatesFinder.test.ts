@@ -15,7 +15,8 @@ describe('FindRelationsNotFoundError', () => {
     const currenciesRates = [
       new CurrencyRate('EUR', generateRandomRate()),
       new CurrencyRate('GBP', generateRandomRate()),
-      new CurrencyRate('USD', generateRandomRate())
+      new CurrencyRate('USD', generateRandomRate()),
+      new CurrencyRate('MXN', 1)
     ];
 
     const id = uuid();
