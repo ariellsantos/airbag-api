@@ -1,9 +1,9 @@
-import OpenExchangeService from '../../../../../src/contexts/Backoffice/CurrencyRates/infrastructure/openexchangeapi/OpenExchangeApiService';
-import { container } from '../../../../../src/Application/dependency-injection/container';
-import Logger from '../../../../../src/contexts/common/domain/Logger';
-import { HttpClient } from '../../../../../src/contexts/common/infrastructure/http/AxiosClient';
-import CurrencyRate from '../../../../../src/contexts/Backoffice/CurrencyRates/domain/CurrencyRate';
-import { OpenExchangeConfig } from '../../../../../src/Application/configs/configFactory';
+import OpenExchangeService from '../../../../../../src/contexts/Backoffice/CurrencyRates/infrastructure/openexchangeapi/OpenExchangeApiService';
+import { container } from '../../../../../../src/Application/dependency-injection/container';
+import Logger from '../../../../../../src/contexts/common/domain/Logger';
+import { HttpClient } from '../../../../../../src/contexts/common/infrastructure/http/AxiosClient';
+import CurrencyRate from '../../../../../../src/contexts/Backoffice/CurrencyRates/domain/CurrencyRate';
+import { OpenExchangeConfig } from '../../../../../../src/Application/configs/configFactory';
 
 const logger: Logger = container.resolve('logger');
 const config: OpenExchangeConfig = container.resolve('openExchangeConfig');

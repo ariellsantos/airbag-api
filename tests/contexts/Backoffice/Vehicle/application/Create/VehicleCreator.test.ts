@@ -4,6 +4,9 @@ import { VehicleRepositoryMock } from '../../__mocks__/VehicleRepositoryMock';
 import { VehicleCreator } from '../../../../../../src/contexts/Backoffice/Vehicle/application/Create/VehicleCreator';
 import { VehicleType } from '../../../../../../src/contexts/Backoffice/Vehicle/domain/Vehicle';
 
+/**
+ * group unit
+ */
 describe('VehicleCreator', () => {
   let vehicleRepository: VehicleRepositoryMock;
 

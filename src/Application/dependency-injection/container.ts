@@ -15,6 +15,7 @@ import { prismaMongoClientFactory } from '../../contexts/common/infrastructure/p
 import CurrenciesRatePrismaRepository from '../../contexts/Backoffice/CurrencyRates/infrastructure/persistence/prisma/CurrenciesRatePrismaRepository';
 import InsertLastCurrenciesRate from '../../contexts/Backoffice/CurrencyRates/application/Insert/InsertLastCurrenciesRate';
 import LatestCurrenciesRatesFinder from '../../contexts/Backoffice/CurrencyRates/application/Find/LatestCurrenciesRatesFinder';
+import AllVehiclesFinder from '../../contexts/Backoffice/Vehicle/application/Find/AllVehiclesFinder';
 
 const container = createContainer({
   injectionMode: InjectionMode.CLASSIC
@@ -47,7 +48,8 @@ container.register({
   prismaMongoClient: asFunction(prismaMongoClientFactory).singleton(),
   currenciesRateRepository: asClass(CurrenciesRatePrismaRepository),
   insertLastCurrenciesRateService: asClass(InsertLastCurrenciesRate),
-  latestCurrenciesRatesFinderService: asClass(LatestCurrenciesRatesFinder)
+  latestCurrenciesRatesFinderService: asClass(LatestCurrenciesRatesFinder),
+  allVehiclesFinderService: asClass(AllVehiclesFinder)
 });
 
 export { container };
