@@ -15,7 +15,7 @@ describe('AllVehiclesFinder', () => {
     vehicleRepository = new VehicleRepositoryMock();
   });
 
-  it('should return a list of vehicles', async () => {
+  it('should return a list of Vehicle', async () => {
     const id = uuid();
     const plates = 'AC-121';
     const vin = '3LN123456789G4564';

@@ -15,7 +15,7 @@ export default class LastVehiclesPricesInsert {
 
   async run(id: string, date: Date) {
     const vehicles = await this.allVehiclesFinderService.run();
-    this.logger.debug('before vehicles');
+    this.logger.debug('before Vehicle');
     if (vehicles.length === 0) {
       return;
     }
