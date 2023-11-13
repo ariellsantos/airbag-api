@@ -23,7 +23,9 @@
     "mongo:generate": "npx prisma generate --schema prisma-mongo/schema.prisma",
     "mongo:db:sync": "npx prisma db push --schema prisma-mongo/schema.prisma",
     "dev:mongo:format": "npx prisma format --schema prisma-mongo/schema.prisma",
-    "job:latest-currencies-rates": "node dist/src/Application/jobs/CurrencyRates/insertCurrentCurrenciesRate.job.js"
+    "job:latest-currencies-rates": "node dist/src/Application/jobs/CurrencyRates/insertCurrentCurrenciesRate.job.js",
+    "apply:migration": "npx prisma migrate deploy",
+    "generate:migrations": "npx prisma migrate dev"
   },
   "keywords": [],
   "author": "",
