@@ -290,6 +290,27 @@ Esta función se registra en el contenedor de dependencias como singleton, permi
 Aunque Prisma ORM ofrece numerosas ventajas, también presenta algunas desventajas. 
 Una de ellas es la manipulación de números decimales. Prisma gestiona este tipo de datos con una biblioteca llamada Decimal.js, lo que puede requerir su implementación y puede resultar en la invasión de nuestros modelos de dominio. A pesar de esta desventaja, las ventajas que Prisma ofrece superan este inconveniente.
 
+## Asegurando la calidad del código
+
+### Linter and Prettier
+
+Se utiliza el paquete husky el cual permite colocar hooks en comandos git y ejecutar procesos cuando ciertas acciones se realicen.
+
+En cada commit en el hook pre-commit se ejecuta el paquete lint-staged con el cual se aplica el prettier y linter a los archivos que están en stage apunto de quedar dentro del commit.
+
+Así cada vez que se realiza un commit se asegura de que el código cumpla con las reglas establecidad.
+
+```shell
+npx lint-staged
+
+
+ "lint-staged": {
+    "{src,tests}/**/*.ts": [
+      "prettier --write ",
+      "tslint --fix"
+    ]
+  },
+```
 ### Tests
 
 Los tests se encuentran en la carpeta **tests** en la raíz del proyecto. Esta carpeta refleja casi por completo la estructura dentro de **src**.
@@ -299,6 +320,9 @@ La estrategia de prueba que se implementa es:
 #### Unit tests
 
 Con estos tests, nos aseguramos de comprobar que el código de nuestros casos de uso se ejecute correctamente sin tener que interactuar directamente con los servicios de infraestructura. Para realizar los tests, se utiliza el paquete **Jest**.
+```shell
+npm run test:unit
+```
 
 ```typescript
 describe('VehicleCreator', () => {
@@ -380,6 +404,10 @@ export class VehicleRepositoryMock implements VehicleRepository {
 En estos tests, se verifica que la integración con cualquier servicio externo funcione según lo esperado. Estos tests interactúan con los servicios reales. Se considera integración cualquier cosa que no dependa de nosotros, ya sea bases de datos, conexiones a APIs, servicios como Kafka o Rabbit, entre otros.
 
 Por ejemplo, este test se realiza para asegurarnos de que nuestro repositorio **VehiclePrismaRepository** se conecta correctamente con la base de datos y guarda los datos de manera adecuada.
+
+```shell
+npm run test:integration
+```
 
 ```typescript
 describe('VehiclePrismaRepository', () => {
