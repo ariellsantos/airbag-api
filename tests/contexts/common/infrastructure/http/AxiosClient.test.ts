@@ -4,6 +4,9 @@ import Logger from '../../../../../src/contexts/common/domain/Logger';
 import { ApiRequestError } from '../../../../../src/contexts/common/infrastructure/http/ApiRequestError';
 
 const logger: Logger = container.resolve('logger');
+/**
+ * @group integration
+ */
 describe('AxiosClient', () => {
   let axiosClient: AxiosClient;
   beforeEach(() => {

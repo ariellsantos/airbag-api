@@ -9,6 +9,9 @@ import { generateRandomRate } from '../../../domain/utils';
 const prismaConnection = container.resolve('prismaMongoClient');
 
 const logger = container.resolve('logger');
+/**
+ * @group integration
+ */
 describe('CurrenciesRatePrismaRepository', () => {
   let currenciesRateRepository: CurrenciesRatePrismaRepository;
   beforeEach(() => {
