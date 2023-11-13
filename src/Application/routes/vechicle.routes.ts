@@ -3,11 +3,11 @@ import { Request, Response } from 'express';
 import Logger from '../../contexts/common/domain/Logger';
 import { container } from '../dependency-injection/container';
 import httpStatus from 'http-status';
-import GetVehicleController from '../constrollers/vehicles/GetVehicleController';
+import GetVehicleController from '../constrollers/Vehicle/GetVehicleController';
 import { ClientError } from '../../contexts/common/domain/errors/ClientError';
 import { body, param } from 'express-validator';
 import { validateReqSchema } from './utils';
-import { PostCreateVehicleController } from '../constrollers/vehicles/PostCreateVehicleController';
+import { PostCreateVehicleController } from '../constrollers/Vehicle/PostCreateVehicleController';
 
 const logger: Logger = container.resolve('logger');
 
@@ -21,7 +21,7 @@ router.get('/vehicles/:id', reqGetVehiclesValidator, validateReqSchema, async (r
 
     const controller: GetVehicleController = container.resolve('getVehicleController');
     const payload = await controller.exec({ id });
-    res.status(httpStatus.IM_A_TEAPOT);
+    res.status(httpStatus.OK);
     res.send({ data: payload });
   } catch (error) {
     logger.error(error as Error);

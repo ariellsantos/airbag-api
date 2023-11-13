@@ -26,7 +26,7 @@ describe('LastVehiclesPricesInsert', () => {
 
     vehiclesPricesRepository = new VehiclesPricesRepositoryMock();
   });
-  it('should inset the latest vehicles prices', async () => {
+  it('should inset the latest Vehicle prices', async () => {
     const v1 = Vehicle.register({
       id: uuid(),
       plates: 'AC-121',
@@ -80,7 +80,7 @@ describe('LastVehiclesPricesInsert', () => {
     vehiclesPricesRepository.assertCreateHaveBeenCalledWith(view.toObject());
   });
 
-  it('should not call create because not vehicles provided', async () => {
+  it('should not call create because not Vehicle provided', async () => {
     const idVehiclesPrices = uuid();
     const dateVehiclesPrices = new Date();
 

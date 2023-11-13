@@ -65,7 +65,7 @@ describe('VehiclePrismaRepository', () => {
     }).rejects.toThrowError(new ObjectNotFound(`Object does not exist`));
   });
 
-  it('should return a list of vehicles', async () => {
+  it('should return a list of Vehicle', async () => {
     const vehicleInfo = {
       id: uuid(),
       plates: 'AC-121',
