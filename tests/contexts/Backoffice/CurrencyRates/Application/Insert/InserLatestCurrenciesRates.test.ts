@@ -1,7 +1,7 @@
 import { container } from '../../../../../../src/Application/dependency-injection/container';
 import InsertLastCurrenciesRate from '../../../../../../src/contexts/Backoffice/CurrencyRates/application/Insert/InsertLastCurrenciesRate';
 import { v4 as uuid } from 'uuid';
-import { CurrenciesRateRepository } from '../../../../../../src/contexts/Backoffice/CurrencyRates/infrastructure/persistence/prisma/CurrenciesRateRepository';
+import { CurrenciesRateRepository } from '../../../../../../src/contexts/Backoffice/CurrencyRates/domain/CurrenciesRateRepository';
 import ExchangeServiceMock from '../../__mocks__/ExchangeServiceMock';
 import CurrenciesRateRepositoryMock from '../../__mocks__/CurrenciesRateRepositoryMock';
 import CurrencyRate from '../../../../../../src/contexts/Backoffice/CurrencyRates/domain/CurrencyRate';
@@ -36,7 +36,8 @@ describe('InsertLatestCurrenciesRates', () => {
     const currenciesRates = [
       new CurrencyRate('EUR', generateRandomRate()),
       new CurrencyRate('GBP', generateRandomRate()),
-      new CurrencyRate('USD', generateRandomRate())
+      new CurrencyRate('USD', generateRandomRate()),
+      new CurrencyRate('MXN', 1)
     ];
 
     const id = uuid();

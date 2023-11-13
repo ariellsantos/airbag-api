@@ -1,15 +1,15 @@
 import { v4 as uuid } from 'uuid';
-import { container } from '../../../../../src/Application/dependency-injection/container';
-import CurrenciesRatePrismaRepository from '../../../../../src/contexts/Backoffice/CurrencyRates/infrastructure/persistence/prisma/CurrenciesRatePrismaRepository';
+import { container } from '../../../../../../../src/Application/dependency-injection/container';
+import CurrenciesRatePrismaRepository from '../../../../../../../src/contexts/Backoffice/CurrencyRates/infrastructure/persistence/prisma/CurrenciesRatePrismaRepository';
 import CurrenciesRate, {
   CurrenciesRateType
-} from '../../../../../src/contexts/Backoffice/CurrencyRates/domain/CurrenciesRate';
-import { generateRandomRate } from '../domain/utils';
+} from '../../../../../../../src/contexts/Backoffice/CurrencyRates/domain/CurrenciesRate';
+import { generateRandomRate } from '../../../domain/utils';
 
 const prismaConnection = container.resolve('prismaMongoClient');
 
 const logger = container.resolve('logger');
-describe('CurrenciesRatePrismaRepositoy', () => {
+describe('CurrenciesRatePrismaRepository', () => {
   let currenciesRateRepository: CurrenciesRatePrismaRepository;
   beforeEach(() => {
     currenciesRateRepository = new CurrenciesRatePrismaRepository(prismaConnection, logger);
@@ -32,6 +32,10 @@ describe('CurrenciesRatePrismaRepositoy', () => {
         {
           code: 'USD',
           rate: generateRandomRate()
+        },
+        {
+          code: 'MXN',
+          rate: 1000
         }
       ],
       date: new Date()
@@ -56,6 +60,10 @@ describe('CurrenciesRatePrismaRepositoy', () => {
         {
           code: 'USD',
           rate: generateRandomRate()
+        },
+        {
+          code: 'MXN',
+          rate: 1000
         }
       ]
     };

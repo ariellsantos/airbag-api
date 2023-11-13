@@ -11,4 +11,10 @@ module.exports = [
         "instances": 1,
         "exec_mode": "cluster"
     },
+    {
+        "script": './dist/src/Application/jobs/VehiclesPrices/insertLastVehiclesPrices.js',
+        "name": "Job.latest.vehicles-prices",
+        "instances": 1,
+        "exec_mode": "cluster"
+    },
 ]

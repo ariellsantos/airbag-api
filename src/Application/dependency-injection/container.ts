@@ -14,6 +14,10 @@ import OpenExchangeService from '../../contexts/Backoffice/CurrencyRates/infrast
 import { prismaMongoClientFactory } from '../../contexts/common/infrastructure/persistence/prisma/prismaMongoClientFactory';
 import CurrenciesRatePrismaRepository from '../../contexts/Backoffice/CurrencyRates/infrastructure/persistence/prisma/CurrenciesRatePrismaRepository';
 import InsertLastCurrenciesRate from '../../contexts/Backoffice/CurrencyRates/application/Insert/InsertLastCurrenciesRate';
+import LatestCurrenciesRatesFinder from '../../contexts/Backoffice/CurrencyRates/application/Find/LatestCurrenciesRatesFinder';
+import AllVehiclesFinder from '../../contexts/Backoffice/Vehicle/application/Find/AllVehiclesFinder';
+import VehiclesPricesPrismaRepository from '../../contexts/Backoffice/VehiclesPrices/infrastructure/persistence/prisma/VehiclePricesPrismaRepository';
+import LastVehiclesPricesInsert from '../../contexts/Backoffice/VehiclesPrices/application/Insert/LastVehiclesPricesInsert';
 
 const container = createContainer({
   injectionMode: InjectionMode.CLASSIC
@@ -45,7 +49,11 @@ container.register({
   exchangeService: aliasTo('openExchangeService'),
   prismaMongoClient: asFunction(prismaMongoClientFactory).singleton(),
   currenciesRateRepository: asClass(CurrenciesRatePrismaRepository),
-  insertLastCurrenciesRateService: asClass(InsertLastCurrenciesRate)
+  insertLastCurrenciesRateService: asClass(InsertLastCurrenciesRate),
+  latestCurrenciesRatesFinderService: asClass(LatestCurrenciesRatesFinder),
+  allVehiclesFinderService: asClass(AllVehiclesFinder),
+  vehiclesPricesRepository: asClass(VehiclesPricesPrismaRepository),
+  lastVehiclesPricesInsertService: asClass(LastVehiclesPricesInsert)
 });
 
 export { container };

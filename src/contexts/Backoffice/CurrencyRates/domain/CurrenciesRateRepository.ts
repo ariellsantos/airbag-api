@@ -1,4 +1,4 @@
-import CurrenciesRate, { CurrenciesRateType } from '../../../domain/CurrenciesRate';
+import CurrenciesRate, { CurrenciesRateType } from './CurrenciesRate';
 
 export interface CurrenciesRateRepository {
   findOne(id: string): Promise<CurrenciesRate>;

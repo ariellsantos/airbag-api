@@ -1,5 +1,5 @@
 import CurrencyExchangeRateService from '../../domain/CurrencyExchangeRateService';
-import { CurrenciesRateRepository } from '../../infrastructure/persistence/prisma/CurrenciesRateRepository';
+import { CurrenciesRateRepository } from '../../domain/CurrenciesRateRepository';
 import CurrenciesRate, { CurrenciesRateType } from '../../domain/CurrenciesRate';
 import Logger from '../../../../common/domain/Logger';
 

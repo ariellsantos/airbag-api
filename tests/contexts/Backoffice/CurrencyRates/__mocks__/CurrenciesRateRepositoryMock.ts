@@ -1,4 +1,4 @@
-import { CurrenciesRateRepository } from '../../../../../src/contexts/Backoffice/CurrencyRates/infrastructure/persistence/prisma/CurrenciesRateRepository';
+import { CurrenciesRateRepository } from '../../../../../src/contexts/Backoffice/CurrencyRates/domain/CurrenciesRateRepository';
 import CurrenciesRate, {
   CurrenciesRateType
 } from '../../../../../src/contexts/Backoffice/CurrencyRates/domain/CurrenciesRate';

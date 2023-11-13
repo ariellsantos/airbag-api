@@ -31,7 +31,6 @@ export default class OpenExchangeService implements CurrencyExchangeRateService 
 
       const mxnXusd = this.reversMXNtoUSD(data.rates.MXN, data.rates.USD);
 
-      delete data.rates.MXN;
       for (const [code, rate] of Object.entries(data.rates)) {
         const mxnRate = this.calculateCrossRateExchange(mxnXusd, rate);
         currencyRates.push(new CurrencyRate(code, mxnRate));
