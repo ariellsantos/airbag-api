@@ -4,5 +4,6 @@ module.exports = {
   testEnvironment: 'node',
   cacheDirectory: '.tmp/jestCache',
   verbose: true,
-  runner: "groups"
+  runner: "groups",
+  modulePathIgnorePatterns: ['./dist'],
 };

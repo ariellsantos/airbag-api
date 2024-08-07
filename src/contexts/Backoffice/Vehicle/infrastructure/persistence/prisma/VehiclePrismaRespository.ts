@@ -18,6 +18,15 @@ export default class VehiclePrismaRepository
     super(prismaClient.vehicle);
   }
 
+  public async findAll(): Promise<Vehicle[] | []> {
+    const vehicles = await this.delegate.findMany({
+      where: {
+        deleted: false
+      }
+    });
+
+    return VehicleDataMapper.mapMany(vehicles);
+  }
   async findOne(id: string): Promise<Vehicle> {
     try {
       const vehicle = await this.findUniqueOrThrows({

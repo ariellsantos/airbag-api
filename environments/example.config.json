@@ -9,5 +9,12 @@
     "username": "user",
     "password": "pass",
     "database": "airbag-db"
+  },
+  "openExchangeApi": {
+    "appId": "appid",
+    "baseUrl": "https://openexchangerates.org/api"
+  },
+  "mongoDb": {
+    "databaseURI": "mongodb+srv://user:pass@mongo/airbag-db?retryWrites=true&w=majority"
   }
 }

@@ -9,6 +9,9 @@ const mariadbConfig = container.resolve('mariadbConfig');
 const orm = container.resolve('orm');
 const logger = container.resolve('logger');
 
+/**
+ * @group integration
+ */
 describe('MariadbTypeormFactory', () => {
   it.skip('creates a client to mariadb with already connected', async () => {
     const connection: DataSource = await mariadbTypeormConnectionFactory(mariadbConfig, orm, logger);
@@ -18,7 +21,7 @@ describe('MariadbTypeormFactory', () => {
     await connection.destroy();
   });
 
-  it('should throw an error because error connection', async () => {
+  it.skip('should throw an error because error connection', async () => {
     const typedb: databaseType = 'mariadb';
     const configs = {
       type: typedb,

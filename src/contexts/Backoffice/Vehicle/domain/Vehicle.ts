@@ -8,6 +8,7 @@ export type VehicleType = {
   vehicleType: string;
   price: Prisma.Decimal;
 };
+
 export class Vehicle {
   readonly id: string;
   readonly plates: string;
@@ -34,6 +35,11 @@ export class Vehicle {
     price: Prisma.Decimal;
   }): Vehicle {
     return new Vehicle(info.id, info.plates, info.vin, info.brand, info.vehicleType, info.price);
+  }
+
+  convertPriceToCurrency(currencyRate: number): Prisma.Decimal {
+    const price = this.price.mul(new Prisma.Decimal(currencyRate / 1000));
+    return price;
   }
 
   toObject(): VehicleType {
